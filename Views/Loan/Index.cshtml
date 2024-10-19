@@ -1,0 +1,51 @@
+@model LoanCalculator.Models.LoanInputModel
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Кредитный калькулятор</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+</head>
+<body>
+    <div class="container">
+        <h2>Кредитный калькулятор</h2>
+
+        <form asp-action="Calculate" method="post">
+            <div class="form-group">
+                <label for="LoanAmount">Сумма займа</label>
+                <input type="number" asp-for="LoanAmount" class="form-control" />
+                <span asp-validation-for="LoanAmount" class="text-danger"></span>
+                <small class="form-text text-muted">Сумма займа должна быть в диапазоне от 1000 до 10 000 000</small>
+            </div>
+
+            <div class="form-group">
+                <label for="LoanTerm">Срок займа (в месяцах)</label>
+                <input type="number" step="1" asp-for="LoanTerm" class="form-control" />
+                <span asp-validation-for="LoanTerm" class="text-danger"></span>
+                <small class="form-text text-muted">Срок займа должен быть в диапазоне от 1 до 36500 месяцев</small>
+            </div>
+
+            <div class="form-group">
+                <label for="InterestRate">Годовая процентная ставка</label>
+                <input type="number" asp-for="InterestRate" class="form-control" />
+                <span asp-validation-for="InterestRate" class="text-danger"></span>
+                <small class="form-text text-muted">Процентная ставка должна быть в диапазоне от 0.001% до 100%</small>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Рассчитать</button>
+            <p><a asp-action="DailyLoan">Калькулятор для расчета в днях</a></p>
+        </form>
+    </div>
+
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
+    }
+</body>
+</html>
