@@ -15,30 +15,30 @@
         <form asp-action="CalculateDaily" method="post">
             <div class="form-group">
                 <label for="LoanAmount">Сумма займа</label>
-                <input type="number" asp-for="LoanAmount" class="form-control" />
+                <input type="number" asp-for="LoanAmount" class="form-control" min="1000" max="10000000" required inputmode="numeric" aria-describedby="LoanAmountHelp" autocomplete="off" />
                 <span asp-validation-for="LoanAmount" class="text-danger"></span>
-                <small class="form-text text-muted">Сумма займа должна быть в диапазоне от 1000 до 10 000 000</small>
+                <small id="LoanAmountHelp" class="form-text text-muted">Сумма займа должна быть в диапазоне от 1000 до 10 000 000</small>
             </div>
 
             <div class="form-group">
                 <label for="LoanTermDays">Срок займа (в днях)</label>
-                <input type="number" step="1" asp-for="LoanTerm" class="form-control" />
+                <input type="number" step="1" asp-for="LoanTerm" class="form-control" min="1" max="36500" required inputmode="numeric" aria-describedby="LoanTermHelp" autocomplete="off" />
                 <span asp-validation-for="LoanTerm" class="text-danger"></span>
-                <small class="form-text text-muted">Срок займа должен быть в диапазоне от 1 до 36500 дней</small>
+                <small id="LoanTermHelp" class="form-text text-muted">Срок займа должен быть в диапазоне от 1 до 36500 дней</small>
             </div>
-            
+
             <div class="form-group">
                 <label for="DailyInterestRate">Дневная процентная ставка</label>
-                <input type="number" asp-for="InterestRate" class="form-control" />
+                <input type="number" asp-for="InterestRate" class="form-control" min="0.001" max="100" required inputmode="numeric" aria-describedby="InterestRateHelp" autocomplete="off" />
                 <span asp-validation-for="InterestRate" class="text-danger"></span>
-                <small class="form-text text-muted">Процентная ставка должна быть в диапазоне от 0.001% до 100%</small>
+                <small id="InterestRateHelp" class="form-text text-muted">Процентная ставка должна быть в диапазоне от 0.001% до 100%</small>
             </div>
 
             <div class="form-group">
                 <label for="PaymentStepDays">Шаг платежа (в днях)</label>
-                <input type="number" step="1" asp-for="PaymentStep" class="form-control" />
+                <input type="number" step="1" asp-for="PaymentStep" class="form-control" min="1" max="365" required inputmode="numeric" aria-describedby="PaymentStepHelp" autocomplete="off" />
                 <span asp-validation-for="PaymentStep" class="text-danger"></span>
-                <small class="form-text text-muted">Шаг платежа должен быть в диапазоне от 1 до 365 дней и кратен сроку займа</small>
+                <small id="PaymentStepHelp" class="form-text text-muted">Шаг платежа должен быть в диапазоне от 1 до 365 дней и кратен сроку займа</small>
             </div>
 
             <button type="submit" class="btn btn-primary">Рассчитать</button>
@@ -48,6 +48,20 @@
 
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('form').on('submit', function (e) {
+                var loanTerm = parseInt($('#LoanTerm').val());
+                var paymentStep = parseInt($('#PaymentStep').val());
+
+                if (loanTerm % paymentStep !== 0) {
+                    e.preventDefault();
+                    alert('Шаг платежа должен быть кратен сроку займа.');
+                }
+            });
+        });
+    </script>
 
     @section Scripts {
         @{
